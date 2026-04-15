@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌞 日月汉字小课堂 🌙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #FFF8E7 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 顶部标题 */
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(90deg, #FFB347 0%, #87CEEB 100%);
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .header p {
+            color: #fff;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* 主要内容区 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 汉字卡片区 */
+        .chars-section {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .char-card {
+            background: #fff;
+            border-radius: 30px;
+            padding: 30px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .char-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .char-card.sun-card {
+            border: 4px solid #FFB347;
+        }
+
+        .char-card.moon-card {
+            border: 4px solid #87CEEB;
+        }
+
+        .char-icon {
+            font-size: 5em;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .char-display {
+            font-size: 6em;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: all 0.5s ease;
+        }
+
+        .sun-card .char-display {
+            color: #FF6B35;
+        }
+
+        .moon-card .char-display {
+            color: #4A90D9;
+        }
+
+        .pinyin {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .meaning {
+            font-size: 1.1em;
+            color: #888;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        .evolution-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .evolution-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 演变动画弹窗 */
+        .evolution-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .evolution-content {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .evolution-step {
+            font-size: 4em;
+            margin: 20px 0;
+            transition: all 0.5s ease;
+        }
+
+        .evolution-text {
+            font-size: 1.3em;
+            color: #666;
+            margin: 15px 0;
+        }
+
+        .close-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* 故事区 */
+        .story-section {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #FF6B35;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .story-content {
+            font-size: 1.2em;
+            line-height: 2;
+            color: #333;
+            text-align: center;
+        }
+
+        .story-page {
+            background: linear-gradient(135deg, #FFF5E6 0%, #E6F3FF 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 15px 0;
+            border-left: 5px solid #FFB347;
+        }
+
+        .story-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        /* 游戏区 */
+        .game-section {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .game-container {
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .match-game {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .match-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .match-item {
+            background: #f8f9fa;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            padding: 15px 25px;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .match-item:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .match-item.selected {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+
+        .match-item.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+            animation: correct 0.5s ease;
+        }
+
+        @keyframes correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .match-item.wrong {
+            background: #ffcdd2;
+            border-color: #f44336;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* 书写练习区 */
+        .write-section {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .write-canvas {
+            border: 3px solid #ddd;
+            border-radius: 20px;
+            background: #FFFEF0;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .canvas-controls {
+            margin-top: 15px;
+        }
+
+        .canvas-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        .canvas-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* 儿歌区 */
+        .song-section {
+            background: linear-gradient(135deg, #FFECD2 0%, #FCB69F 100%);
+            border-radius: 30px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .song-content {
+            font-size: 1.4em;
+            line-height: 2.5;
+            color: #333;
+            background: rgba(255,255,255,0.8);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .song-line {
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .song-line:hover {
+            transform: scale(1.02);
+            color: #FF6B35;
+        }
+
+        .highlight-word {
+            font-weight: bold;
+            color: #FF6B35;
+            font-size: 1.3em;
+        }
+
+        .play-song-btn {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.3em;
+            cursor: pointer;
+            margin-top: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 星星奖励 */
+        .stars {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            pointer-events: none;
+            z-index: 2000;
+            display: none;
+        }
+
+        .star-animation {
+            animation: starPop 1s ease forwards;
+        }
+
+        @keyframes starPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.5) rotate(180deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 0; }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .char-card {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .char-display {
+                font-size: 4em;
+            }
+            
+            .match-game {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* 进度条 */
+        .progress-section {
+            background: white;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFB347 0%, #87CEEB 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 15px;
+        }
+
+        .progress-text {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        /* 奖励徽章 */
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+            animation: badgePop 0.5s ease;
+        }
+
+        @keyframes badgePop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 星星奖励层 -->
+    <div class="stars" id="stars">⭐🌟✨</div>
+
+    <!-- 标题区 -->
+    <header class="header">
+        <h1>🌞 日月汉字小课堂 🌙</h1>
+        <p>和太阳公公、月亮婆婆一起学习吧！</p>
+    </header>
+
+    <div class="container">
+        <!-- 进度区 -->
+        <div class="progress-section">
+            <h3>🎯 学习进度</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <p class="progress-text" id="progressText">点击卡片开始学习吧！</p>
+            <div id="badges"></div>
+        </div>
+
+        <!-- 汉字学习区 -->
+        <section class="chars-section">
+            <div class="char-card sun-card" onclick="showEvolution('sun')">
+                <div class="char-icon">☀️</div>
+                <div class="char-display">日</div>
+                <div class="pinyin">rì</div>
+                <div class="meaning">🌅 太阳公公</div>
+                <button class="evolution-btn">看演变动画 🔍</button>
+            </div>
+
+            <div class="char-card moon-card" onclick="showEvolution('moon')">
+                <div class="char-icon">🌙</div>
+                <div class="char-display">月</div>
+                <div class="pinyin">yuè</div>
+                <div class="meaning">🌃 月亮婆婆</div>
+                <button class="evolution-btn">看演变动画 🔍</button>
+            </div>
+        </section>
+
+        <!-- 演变动画弹窗 -->
+        <div class="evolution-modal" id="evolutionModal">
+            <div class="evolution-content">
+                <h2 id="evoTitle">汉字演变</h2>
+                <div class="evolution-step" id="evoStep">☀️</div>
+                <div class="evolution-text" id="evoText">准备开始...</div>
+                <button class="close-btn" onclick="closeEvolution()">关闭</button>
+            </div>
+        </div>
+
+        <!-- 故事区 -->
+        <section class="story-section">
+            <h2 class="section-title">📖 故事时间</h2>
+            <div class="story-content">
+                <div class="story-page">
+                    <div class="story-icon">☀️</div>
+                    <p>很久很久以前，人们还不会写字。<br>
+                    看到天上圆圆的<strong style="color:#FF6B35">太阳</strong>，<br>
+                    就画了一个圈，中间加上一点——<br>
+                    这就是<span class="highlight-word">日</span>！</p>
+                </div>
+                <div class="story-page">
+                    <div class="story-icon">🌙</div>
+                    <p>到了晚上，弯弯的<strong style="color:#4A90D9">月亮</strong>挂在天上。<br>
+                    古人一看，像不像小香蕉？<br>
+                    就画了下来——<br>
+                    这就是<span class="highlight-word">月</span>！</p>
+                </div>
+                <div class="story-page">
+                    <div class="story-icon">🤝</div>
+                    <p><span class="highlight-word">日</span>和<span class="highlight-word">月</span>是好朋友！<br>
+                    太阳公公白天上班，月亮婆婆晚上值班，<br>
+                    轮流照亮我们的大地～</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 连一连游戏 -->
+        <section class="game-section">
+            <h2 class="section-title">🎮 连一连</h2>
+            <p class="game-title">把图片和对应的汉字连起来吧！</p>
+            <div class="match-game">
+                <div class="match-column">
+                    <div class="match-item" data-type="image" data-match="sun">☀️ 太阳</div>
+                    <div class="match-item" data-type="image" data-match="moon">🌙 月亮</div>
+                    <div class="match-item" data-type="image" data-match="ming">📅 明天</div>
+                </div>
+                <div class="match-column">
+                    <div class="match-item" data-type="char" data-match="moon">月</div>
+                    <div class="match-item" data-type="char" data-match="sun">日</div>
+                    <div class="match-item" data-type="char" data-match="ming">明</div>
+                </div>
+            </div>
+            <p style="color: #666; margin-top: 15px;">点击左边图片，再点击右边汉字进行配对！</p>
+        </section>
+
+        <!-- 书写练习 -->
+        <section class="write-section">
+            <h2 class="section-title">✏️ 写一写</h2>
+            <p style="font-size: 1.2em; color: #666; margin-bottom: 15px;">用手指或鼠标在田字格里写字吧！</p>
+            <div style="position: relative; display: inline-block;">
+                <canvas id="writeCanvas" class="write-canvas" width="300" height="300"></canvas>
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.3;">
+                    <svg width="300" height="300">
+                        <line x1="150" y1="0" x2="150" y2="300" stroke="#ccc" stroke-width="2"/>
+                        <line x1="0" y1="150" x2="300" y2="150" stroke="#ccc" stroke-width="2"/>
+                        <line x1="0" y1="0" x2="300" y2="300" stroke="#eee" stroke-width="1"/>
+                        <line x1="300" y1="0" x2="0" y2="300" stroke="#eee" stroke-width="1"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="canvas-controls">
+                <button class="canvas-btn" onclick="clearCanvas()">🗑️ 擦除</button>
+                <button class="canvas-btn" onclick="switchChar()">🔄 切换（日/月）</button>
+                <button class="canvas-btn" onclick="showGuide()">💡 看我写</button>
+            </div>
+            <p style="margin-top: 15px; font-size: 1.3em; color: #FF6B35;" id="currentChar">当前练习：日</p>
+        </section>
+
+        <!-- 儿歌区 -->
+        <section class="song-section">
+            <h2 class="section-title">🎵 日月歌</h2>
+            <button class="play-song-btn" onclick="playSong()">▶️ 跟我一起唱</button>
+            <div class="song-content">
+                <div class="song-line">☀️ <span class="highlight-word">日</span> <span class="highlight-word">日</span> <span class="highlight-word">日</span>，太阳出，</div>
+                <div class="song-line">暖暖光照亮大地。🌅</div>
+                <div class="song-line">🌙 <span class="highlight-word">月</span> <span class="highlight-word">月</span> <span class="highlight-word">月</span>，弯又弯，</div>
+                <div class="song-line">挂在天上像小船。⛵</div>
+                <div class="song-line">📅 <span class="highlight-word">日</span> 加 <span class="highlight-word">月</span>，变成<span class="highlight-word">明</span>，</div>
+                <div class="song-line">明天又是好天气！🌈</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 学习进度
+        let progress = 0;
+        let badges = [];
+        let currentWriteChar = '日';
+        let selectedItem = null;
+
+        // 汉字演变动画
+        const evolutionData = {
+            sun: {
+                title: '☀️ "日"字的演变',
+                steps: ['☀️', '🔴', '◯', '日'],
+                texts: [
+                    '圆圆的太阳挂在天上',
+                    '古人画了一个圈',
+                    '中间加一点表示光芒',
+                    '就变成了"日"字！'
+                ]
+            },
+            moon: {
+                title: '🌙 "月"字的演变',
+                steps: ['🌙', '🌒', ')', '月'],
+                texts: [
+                    '弯弯的月牙像香蕉',
+                    '古人画了一弯新月',
+                    '写成弯弯的形状',
+                    '就变成了"月"字！'
+                ]
+            }
+        };
+
+        function showEvolution(char) {
+            const modal = document.getElementById('evolutionModal');
+            const title = document.getElementById('evoTitle');
+            const step = document.getElementById('evoStep');
+            const text = document.getElementById('evoText');
+            
+            const data = evolutionData[char];
+            title.textContent = data.title;
+            modal.style.display = 'flex';
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i >= data.steps.length) {
+                    clearInterval(interval);
+                    showStars();
+                    addProgress(25);
+                    if (!badges.includes('explorer')) {
+                        badges.push('explorer');
+                        addBadge('🔍 探索家');
+                    }
+                    return;
+                }
+                step.textContent = data.steps[i];
+                text.textContent = data.texts[i];
+                i++;
+            }, 1500);
+            
+            modal.dataset.interval = interval;
+        }
+
+        function closeEvolution() {
+            const modal = document.getElementById('evolutionModal');
+            if (modal.dataset.interval) {
+                clearInterval(parseInt(modal.dataset.interval));
+            }
+            modal.style.display = 'none';
+        }
+
+        // 星星动画
+        function showStars() {
+            const stars = document.getElementById('stars');
+            stars.style.display = 'block';
+            stars.classList.add('star-animation');
+            setTimeout(() => {
+                stars.style.display = 'none';
+                stars.classList.remove('star-animation');
+            }, 1000);
+        }
+
+        // 进度更新
+        function addProgress(amount) {
+            progress = Math.min(progress + amount, 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                progress === 100 ? '🎉 太棒了！你已经学会了日、月！' : `学习进度：${progress}%`;
+        }
+
+        function addBadge(name) {
+            const badgeDiv = document.createElement('span');
+            badgeDiv.className = 'badge';
+            badgeDiv.textContent = name;
+            document.getElementById('badges').appendChild(badgeDiv);
+        }
+
+        // 连一连游戏
+        document.querySelectorAll('.match-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (this.classList.contains('correct')) return;
+                
+                if (!selectedItem) {
+                    this.classList.add('selected');
+                    selectedItem = this;
+                } else {
+                    const prev = selectedItem;
+                    const curr = this;
+                    
+                    if (prev.dataset.match === curr.dataset.match && prev !== curr) {
+                        prev.classList.remove('selected');
+                        prev.classList.add('correct');
+                        curr.classList.remove('selected');
+                        curr.classList.add('correct');
+                        showStars();
+                        addProgress(15);
+                        
+                        // 检查是否全部完成
+                        if (document.querySelectorAll('.match-item.correct').length === 6) {
+                            if (!badges.includes('matcher')) {
+                                badges.push('matcher');
+                                addBadge('🔗 配对高手');
+                            }
+                        }
+                    } else {
+                        prev.classList.remove('selected');
+                        prev.classList.add('wrong');
+                        curr.classList.add('wrong');
+                        setTimeout(() => {
+                            prev.classList.remove('wrong');
+                            curr.classList.remove('wrong');
+                        }, 500);
+                    }
+                    selectedItem = null;
+                }
+            });
+        });
+
+        // 书写练习
+        const canvas = document.getElementById('writeCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = '#333';
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('touchstart', startDraw, {passive: false});
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchmove', draw, {passive: false});
+        canvas.addEventListener('mouseup', endDraw);
+        canvas.addEventListener('touchend', endDraw);
+        canvas.addEventListener('mouseout', endDraw);
+
+        function startDraw(e) {
+            isDrawing = true;
+            const pos = getPos(e);
+            lastX = pos.x;
+            lastY = pos.y;
+            if (e.touches) e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            lastX = pos.x;
+            lastY = pos.y;
+            if (e.touches) e.preventDefault();
+        }
+
+        function endDraw() {
+            if (isDrawing) {
+                isDrawing = false;
+                addProgress(5);
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function switchChar() {
+            currentWriteChar = currentWriteChar === '日' ? '月' : '日';
+            document.getElementById('currentChar').textContent = `当前练习：${currentWriteChar}`;
+            clearCanvas();
+        }
+
+        function showGuide() {
+            clearCanvas();
+            ctx.strokeStyle = 'rgba(255, 107, 53, 0.5)';
+            ctx.lineWidth = 12;
+            
+            if (currentWriteChar === '日') {
+                // 画日字
+                ctx.strokeRect(75, 75, 150, 150);
+                ctx.beginPath();
+                ctx.moveTo(150, 75);
+                ctx.lineTo(150, 225);
+                ctx.stroke();
+            } else {
+                // 画月字
+                ctx.beginPath();
+                ctx.arc(150, 150, 70, -Math.PI/3, Math.PI/3, false);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(150, 80);
+                ctx.lineTo(150, 220);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(150, 135);
+                ctx.lineTo(205, 135);
+                ctx.stroke();
+            }
+            
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 8;
+        }
+
+        // 儿歌朗读
+        function playSong() {
+            const lines = [
+                '日日日，太阳出，',
+                '暖暖光照亮大地。',
+                '月月月，弯又弯，',
+                '挂在天上像小船。',
+                '日加月，变成明，',
+                '明天又是好天气！'
+            ];
+            
+            if ('speechSynthesis' in window) {
+                lines.forEach((line, index) => {
+                    setTimeout(() => {
+                        const utterance = new SpeechSynthesisUtterance(line);
+                        utterance.lang = 'zh-CN';
+                        utterance.rate = 0.8;
+                        utterance.pitch = 1.2;
+                        speechSynthesis.speak(utterance);
+                        
+                        // 高亮当前行
+                        const songLines = document.querySelectorAll('.song-line');
+                        songLines.forEach(l => l.style.background = 'transparent');
+                        if (songLines[index]) {
+                            songLines[index].style.background = 'rgba(255,255,255,0.5)';
+                            songLines[index].style.borderRadius = '10px';
+                        }
+                    }, index * 2500);
+                });
+                
+                addProgress(20);
+                if (!badges.includes('singer')) {
+                    badges.push('singer');
+                    addBadge('🎵 小歌手');
+                }
+            } else {
+                alert('你的浏览器不支持语音朗读功能哦~');
+            }
+        }
+
+        // 点击弹窗外部关闭
+        document.getElementById('evolutionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEvolution();
+            }
+        });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4655f3c58dd6497fb7ddb85b68480db7","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
